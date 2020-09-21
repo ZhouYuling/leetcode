@@ -1,33 +1,46 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 public class code_046 {
 
-    public int translateNum(int num) {
-        String src = String.valueOf(num);
-        int p = 0, q = 0, r = 1;
-        for(int i = 0; i < src.length(); ++i){
-            p = q;
-            q = r;
-            r = 0;
-            r += q;
-            if(i == 0){
-                continue;
-            }
-            String pre = src.substring(i - 1, i + 1);
-            if(pre.compareTo("25") <= 0 && pre.compareTo("10") >= 0){
-                r += p;
-            }
+    public void backtrack(int n,
+                          ArrayList<Integer> output,
+                          List<List<Integer>> res,
+                          int first) {
+        // 所有数都填完了
+        if (first == n)
+            res.add(new ArrayList<Integer>(output));
+        for (int i = first; i < n; i++) {
+            // 动态维护数组
+            Collections.swap(output, first, i);
+            // 继续递归填下一个数
+            backtrack(n, output, res, first + 1);
+            // 撤销操作
+            Collections.swap(output, first, i);
         }
+    }
 
-        return r;
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> res = new LinkedList();
+
+        ArrayList<Integer> output = new ArrayList<Integer>();
+        for (int num : nums)
+            output.add(num);
+
+        int n = nums.length;
+        backtrack(n, output, res, 0);
+        return res;
     }
 
     public static void main(String[] args) {
 
-        code_046 code_046 = new code_046();
-        int i = code_046.translateNum(12258);
-        System.out.println(i);
-
+        code_046 code = new code_046();
+        int[] nums = {1,2,3};
+        List<List<Integer>> permute = code.permute(nums);
+        System.out.println(permute);
 
     }
-
 
 }
