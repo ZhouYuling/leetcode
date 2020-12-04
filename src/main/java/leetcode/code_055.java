@@ -1,3 +1,5 @@
+package leetcode;
+
 public class code_055 {
 
     static public class Solution {

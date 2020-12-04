@@ -1,7 +1,16 @@
+package leetcode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class code_637 {
+
+    class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode(int x) { val = x; }
+    }
 
     public static List<Double> averageOfLevels(TreeNode root) {
         List<Integer> counts = new ArrayList<Integer>();
@@ -30,18 +39,5 @@ public class code_637 {
         dfs(root.right, level + 1, counts, sums);
     }
 
-    public static void main(String[] args) {
-
-
-
-    }
-
-}
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { val = x; }
 }
 

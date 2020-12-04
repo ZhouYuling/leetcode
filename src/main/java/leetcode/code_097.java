@@ -1,3 +1,5 @@
+package leetcode;
+
 class code_097 {
     public boolean isInterleave(String s1, String s2, String s3) {
 
@@ -56,8 +58,6 @@ class code_097 {
         String s2 = "dbbca";
         String s3 = "aadbbcbcac";
         code_097 code_097 = new code_097();
-        //boolean interleave = code_097.isInterleave(s1, s2, s3);
-        //System.out.println(interleave);
         boolean interleave2 = code_097.isInterleave2(s1, s2, s3);
         System.out.println(interleave2);
 
