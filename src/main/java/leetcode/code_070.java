@@ -1,3 +1,5 @@
+package leetcode;
+
 public class code_070 {
 
     public int climbStairs(int n) {
