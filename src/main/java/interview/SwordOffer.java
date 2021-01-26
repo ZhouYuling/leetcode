@@ -238,5 +238,122 @@ public class SwordOffer {
         return false;
     }
 
+    //15.二进制1的个数
+    public int NumberOf1(int n){
+        int count = 0;
+        while(n!=0){
+            count++;
+            n=(n-1)&n;
+        }
+        return count;
+    }
+
+    //18.删除链表的节点
+    public ListNode deleteNode(ListNode head, int val) {
+        if(head.val == val){
+            return head.next;
+        }
+        ListNode node = head;
+        while(node.next.val != val){
+            node = node.next;
+        }
+        if(node.next != null){
+            node.next = node.next.next;
+        }
+        return node;
+    }
+
+    public ListNode deleteNodeChongFu(ListNode head, int val){
+        if(head.val == val){
+            return head.next;
+        }
+        ListNode node = head;
+        int flag = node.val;
+        for(int i = 0; node != null; i ++){
+            if(node.val == flag){
+                node.next = node.next.next;
+            }
+            flag = node.val;
+            node = node.next;
+        }
+        return head;
+    }
+
+    //22.链表中倒数第k个节点
+    public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode fast = head, slow = fast;
+        for(int i = 0; i < k; i ++){
+            fast = fast.next;
+        }
+        while(fast != null){
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    //23.链表中环的入口结点
+    public ListNode EntryNodeOfLoop(ListNode head){
+        if(head == null || head.next == null){
+            return null;
+        }
+        HashSet<ListNode> set = new HashSet<ListNode>();
+        while(head != null){
+            if(!set.add(head)){
+                return head;
+            }
+            head = head.next;
+        }
+        return null;
+    }
+
+    //24.翻转链表
+    public ListNode reverseList(ListNode head) {
+
+        if(head == null || head.next == null){
+            return head;
+        }
+
+        ListNode cur = head;
+        ListNode pre = null;
+        ListNode next = null;
+        while(cur != null){
+            next = cur.next;
+            cur.next = pre;
+
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
+
+    public ListNode reverseList2(ListNode head) {
+
+        if(head == null || head.next == null){
+            return head;
+        }
+        ListNode newNode = reverseList2(head);
+        head.next.next = head;
+        head.next = null;
+        return newNode;
+    }
+
+    //25.合并两个排序的链表
+    public ListNode Merge(ListNode l1, ListNode l2){
+        ListNode dum = new ListNode(0), cur = dum;
+        while (l1 != null && l2 != null){
+            if(l1.val < l2.val){
+                cur.next = l1;
+                l1 = l1.next;
+            }else{
+                cur.next = l2;
+                l2 = l1;
+            }
+        }
+        cur.next = l1 != null ? l1 : l2;
+        return cur;
+    }
+
+
 
 }
