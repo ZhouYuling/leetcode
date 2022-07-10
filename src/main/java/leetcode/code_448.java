@@ -1,5 +1,6 @@
 package leetcode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -80,6 +81,27 @@ public class code_448 {
         System.out.println(disappearedNumbers1);
 
 
+    }
+
+
+    class Solution3 {
+        public List<Integer> findDisappearedNumbers(int[] nums) {
+            int n = nums.length;
+            for (int num : nums) {
+                //nums充当哈希表
+                int x = (num - 1) % n;
+                //注意是+n
+                nums[x] += n;
+            }
+            List<Integer> ret = new ArrayList<Integer>();
+            //不超过n的数
+            for (int i = 0; i < n; i++) {
+                if (nums[i] <= n) {
+                    ret.add(i + 1);
+                }
+            }
+            return ret;
+        }
     }
 
 

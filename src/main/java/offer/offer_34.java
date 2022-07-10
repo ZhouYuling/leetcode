@@ -1,15 +1,10 @@
 package offer;
 
+import utils.TreeNode;
+
 import java.util.*;
 
 public class offer_34 {
-
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
 
     static class Solution {
         List<List<Integer>> ret = new LinkedList<List<Integer>>();

@@ -1,16 +1,11 @@
 package leetcode;
 
+import utils.TreeNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class code_235 {
-
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
 
     static class Solution {
         public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {

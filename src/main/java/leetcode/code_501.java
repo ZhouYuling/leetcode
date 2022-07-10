@@ -1,17 +1,12 @@
 package leetcode;
 
+import utils.TreeNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class code_501 {
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
 
     static class Solution {
         int base, count, maxCount;

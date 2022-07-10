@@ -1,5 +1,7 @@
 package leetcode;
 
+import static utils.Utils.swap;
+
 public class code_075 {
 
     static class Solution {
@@ -18,16 +20,15 @@ public class code_075 {
                 if (nums[curr] == 0) {
                     // 交换第 p0个和第curr个元素
                     // i++，j++
-                    tmp = nums[p0];
-                    nums[p0++] = nums[curr];
-                    nums[curr++] = tmp;
+                    swap(nums, curr, p0);
+                    p0++;
+                    curr++;
                 }
                 else if (nums[curr] == 2) {
                     // 交换第k个和第curr个元素
                     // p2--
-                    tmp = nums[curr];
-                    nums[curr] = nums[p2];
-                    nums[p2--] = tmp;
+                    swap(nums, curr, p2);
+                    p2--;
                 }
                 else curr++;
             }

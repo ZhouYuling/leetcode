@@ -2,6 +2,7 @@ package leetcode;
 
 public class code_287 {
 
+    // 二分查找
     static class Solution {
         public int findDuplicate(int[] nums) {
             int n = nums.length;
@@ -9,6 +10,7 @@ public class code_287 {
             while (l <= r) {
                 int mid = (l + r) >> 1;
                 int cnt = 0;
+                //其数字都在 [1, n] 范围内（包括 1 和 n）
                 for (int i = 0; i < n; ++i) {
                     if (nums[i] <= mid) {
                         cnt++;

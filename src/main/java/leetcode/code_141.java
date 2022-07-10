@@ -1,15 +1,8 @@
 package leetcode;
 
-public class code_141 {
+import utils.ListNode;
 
-    class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-            next = null;
-        }
-    }
+public class code_141 {
 
     public class Solution {
         private ListNode getIntersect(ListNode head) {

@@ -1,18 +1,13 @@
 package leetcode;
 
+import utils.TreeNode;
+
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 public class code_106 {
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
 
     static class Solution {
         int post_idx;

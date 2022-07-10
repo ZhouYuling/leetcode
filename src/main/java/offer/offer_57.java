@@ -2,6 +2,7 @@ package offer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 public class offer_57 {
@@ -39,6 +40,36 @@ public class offer_57 {
         }
 
     }
+
+    class Solution2 {
+        public int[] twoSum(int[] nums, int target) {
+
+            HashSet<Integer> set = new HashSet<>();
+            for (int num : nums) {
+                if (set.contains(target - num)) return new int[]{num, target - num};
+                else set.add(num);
+            }
+
+
+            return new int[0];
+        }
+    }
+
+    class Solution3 {
+        public int[] twoSum(int[] nums, int target) {
+            int left = 0, right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+                if (sum == target) return new int[]{nums[left], nums[right]};
+                if (sum < target) left ++;
+                if (sum > target) right --;
+            }
+
+
+            return new int[0];
+        }
+    }
+
 
     public static void main(String[] args) {
 

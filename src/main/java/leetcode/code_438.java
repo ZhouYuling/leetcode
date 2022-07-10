@@ -1,6 +1,7 @@
 package leetcode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class code_438 {
@@ -51,6 +52,97 @@ public class code_438 {
         }
     }
 
+    //滑动窗口
+    static class Solution1 {
+        public List<Integer> findAnagrams(String s, String p) {
+            int sLen = s.length(), pLen = p.length();
+
+            //字串比母串长，则肯定没有异位词
+            if (sLen < pLen) {
+                return new ArrayList<Integer>();
+            }
+
+            List<Integer> ans = new ArrayList<Integer>();
+            int[] sCount = new int[26];
+            int[] pCount = new int[26];
+            for (int i = 0; i < pLen; ++i) {
+                ++sCount[s.charAt(i) - 'a'];
+                ++pCount[p.charAt(i) - 'a'];
+            }
+
+            if (Arrays.equals(sCount, pCount)) {
+                ans.add(0);
+            }
+
+            //开始让窗口进行滑动
+            for (int i = 0; i < sLen - pLen; ++i) { //i是滑动前的首位
+                --sCount[s.charAt(i) - 'a']; //将滑动前首位的词频删去
+                ++sCount[s.charAt(i + pLen) - 'a']; //增加滑动后最后为的词频
+
+                if (Arrays.equals(sCount, pCount)) {
+                    ans.add(i + 1);
+                }
+            }
+
+            return ans;
+        }
+    }
+
+
+    //优化后的滑动窗口
+    static class Solution3 {
+        public List<Integer> findAnagrams(String s, String p) {
+            int sLen = s.length(), pLen = p.length();
+
+            if (sLen < pLen) {
+                return new ArrayList<Integer>();
+            }
+
+            List<Integer> ans = new ArrayList<Integer>();
+            int[] count = new int[26];
+            for (int i = 0; i < pLen; ++i) {
+                ++count[s.charAt(i) - 'a'];
+                --count[p.charAt(i) - 'a'];
+            }
+
+            int differ = 0;
+            for (int j = 0; j < 26; ++j) {
+                if (count[j] != 0) {
+                    ++differ;
+                }
+            }
+
+            if (differ == 0) {
+                ans.add(0);
+            }
+
+            for (int i = 0; i < sLen - pLen; ++i) {
+                char c = s.charAt(i);
+                if (count[c - 'a'] == 1) {  // 窗口中字母 s[i] 的数量与字符串 p 中的数量从不同变得相同
+                    --differ;
+                } else if (count[c - 'a'] == 0) {  // 窗口中字母 s[i] 的数量与字符串 p 中的数量从相同变得不同
+                    ++differ;
+                }
+                --count[c - 'a'];
+
+                char c1 = s.charAt(i + pLen);
+                if (count[c1 - 'a'] == -1) {  // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从不同变得相同
+                    --differ;
+                } else if (count[c1 - 'a'] == 0) {  // 窗口中字母 s[i+pLen] 的数量与字符串 p 中的数量从相同变得不同
+                    ++differ;
+                }
+                ++count[c1 - 'a'];
+
+                if (differ == 0) {
+                    ans.add(i + 1);
+                }
+            }
+
+            return ans;
+        }
+    }
+
+
     public static void main(String[] args) {
 
         Solution solution = new Solution();
@@ -59,6 +151,12 @@ public class code_438 {
         List<Integer> anagrams = solution.findAnagrams(s, p);
         System.out.println(anagrams);
 
+
+        Solution1 solution1 = new Solution1();
+        System.out.println(solution1.findAnagrams(s, p));
+
+        List<Integer> anagrams1 = new Solution3().findAnagrams("cbaaaebabacd", "aaa");
+        System.out.println(anagrams1);
 
     }
 

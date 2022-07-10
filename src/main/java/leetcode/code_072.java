@@ -26,8 +26,11 @@ public class code_072 {
             // 计算所有 DP 值
             for (int i = 1; i < n + 1; i++) {
                 for (int j = 1; j < m + 1; j++) {
+                    // A的i位置增加一个字符，和B的0-j保持一致
                     int left = D[i - 1][j] + 1;
+                    // B的j位置增加一个字符，和A的0-i保持一致
                     int down = D[i][j - 1] + 1;
+                    // A的i位置替换成B的j位置的字符，如果两个位置的字符相等，我们也可以不做处理
                     int left_down = D[i - 1][j - 1];
                     if (word1.charAt(i - 1) != word2.charAt(j - 1)) {
                         left_down += 1;

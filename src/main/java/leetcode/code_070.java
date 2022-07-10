@@ -40,4 +40,16 @@ public class code_070 {
         System.out.println(ret[0][0] + "  " + ret[0][1]+ "  " + ret[1][0]+ "  " + ret[1][1]);
     }
 
+    // 手写爬楼梯
+    public int climbStairs1(int n) {
+        int p = 0,q = 0, r = 1;
+        for (int i = 0; i < n; i++) {
+            p = q;
+            q = r;
+            r = q + p;
+        }
+
+        return r;
+    }
+
 }

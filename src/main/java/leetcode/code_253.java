@@ -6,15 +6,25 @@ import java.util.PriorityQueue;
 
 public class code_253 {
 
+    // 优先队列
     class Solution {
         public int minMeetingRooms(int[][] intervals) {
 
-            // Check for the base case. If there are no intervals, return 0
+            // 边界，会议为空，则返回0
             if (intervals.length == 0) {
                 return 0;
             }
 
-            // Min heap
+            // 根据起始时间排序
+            Arrays.sort(
+                    intervals,
+                    new Comparator<int[]>() {
+                        public int compare(final int[] a, final int[] b) {
+                            return a[0] - b[0];
+                        }
+                    });
+
+            // 最小堆，根据会议时间进行排序建堆
             PriorityQueue<Integer> allocator =
                     new PriorityQueue<Integer>(
                             intervals.length,
@@ -24,41 +34,33 @@ public class code_253 {
                                 }
                             });
 
-            // Sort the intervals by start time
-            Arrays.sort(
-                    intervals,
-                    new Comparator<int[]>() {
-                        public int compare(final int[] a, final int[] b) {
-                            return a[0] - b[0];
-                        }
-                    });
-
-            // Add the first meeting
+            // 添加第一个排序时间
             allocator.add(intervals[0][1]);
 
-            // Iterate over remaining intervals
+            // 迭代余下的会议
             for (int i = 1; i < intervals.length; i++) {
 
-                // If the room due to free up the earliest is free, assign that room to this meeting.
+                // 如果目前会议起始时间大于，目前最早结束的会议时间，则弹出堆顶元素
+                // 这个房间能够继续使用
                 if (intervals[i][0] >= allocator.peek()) {
                     allocator.poll();
                 }
 
-                // If a new room is to be assigned, then also we add to the heap,
-                // If an old room is allocated, then also we have to add to the heap with updated end time.
+                // 把当前的会议添加到堆中
                 allocator.add(intervals[i][1]);
             }
 
-            // The size of the heap tells us the minimum rooms required for all the meetings.
+            // 返回所需会议室的最小数量
             return allocator.size();
         }
     }
 
 
+    // 有序化
     class Solution2 {
         public int minMeetingRooms(int[][] intervals) {
 
-            // Check for the base case. If there are no intervals, return 0
+            // 边界，会议为空，则返回0
             if (intervals.length == 0) {
                 return 0;
             }
@@ -71,7 +73,7 @@ public class code_253 {
                 end[i] = intervals[i][1];
             }
 
-            // Sort the intervals by end time
+            // 从小到大排序终止时间
             Arrays.sort(
                     end,
                     new Comparator<Integer>() {
@@ -80,7 +82,7 @@ public class code_253 {
                         }
                     });
 
-            // Sort the intervals by start time
+            // 从小到大排序起始时间
             Arrays.sort(
                     start,
                     new Comparator<Integer>() {
@@ -89,16 +91,13 @@ public class code_253 {
                         }
                     });
 
-            // The two pointers in the algorithm: e_ptr and s_ptr.
             int startPointer = 0, endPointer = 0;
 
-            // Variables to keep track of maximum number of rooms used.
             int usedRooms = 0;
 
-            // Iterate over intervals.
             while (startPointer < intervals.length) {
 
-                // If there is a meeting that has ended by the time the meeting at `start_pointer` starts
+                // 会议起始时间大于另外一个会议的结束时间，该房间能够被继续使用
                 if (start[startPointer] >= end[endPointer]) {
                     usedRooms -= 1;
                     endPointer += 1;
@@ -114,6 +113,12 @@ public class code_253 {
 
             return usedRooms;
         }
+    }
+
+    public static void main(String[] args) {
+
+        System.out.println(Arrays.toString(new int[0]));
+
     }
 
 }

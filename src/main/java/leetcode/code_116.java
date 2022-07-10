@@ -25,6 +25,7 @@ public class code_116 {
         }
     }
 
+    //层序遍历
     static class Solution1 {
         public Node connect(Node root) {
             if (root == null) {
@@ -37,21 +38,16 @@ public class code_116 {
 
             // 外层的 while 循环迭代的是层数
             while (!queue.isEmpty()) {
-
                 // 记录当前队列大小
                 int size = queue.size();
-
                 // 遍历这一层的所有节点
                 for (int i = 0; i < size; i++) {
-
                     // 从队首取出元素
                     Node node = queue.poll();
-
                     // 连接
                     if (i < size - 1) {
                         node.next = queue.peek();
                     }
-
                     // 拓展下一层节点
                     if (node.left != null) {
                         queue.add(node.left);
@@ -61,11 +57,11 @@ public class code_116 {
                     }
                 }
             }
-
             // 返回根节点
             return root;
         }
     }
+
 
     static class Solution2 {
         public Node connect(Node root) {
@@ -75,18 +71,15 @@ public class code_116 {
 
             // 从根节点开始
             Node leftmost = root;
-
             while (leftmost.left != null) {
-
                 // 遍历这一层节点组织成的链表，为下一层的节点更新 next 指针
                 Node head = leftmost;
-
                 while (head != null) {
-
                     // CONNECTION 1
                     head.left.next = head.right;
 
                     // CONNECTION 2
+                    // 题目给出条件，二叉树是一颗完美二叉树，所以不存在做节点不存在的情况
                     if (head.next != null) {
                         head.right.next = head.next.left;
                     }

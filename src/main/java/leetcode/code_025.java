@@ -1,15 +1,8 @@
 package leetcode;
 
+import utils.ListNode;
+
 public class code_025 {
-
-    public static class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
 
     static class Solution {
         public ListNode reverseKGroup(ListNode head, int k) {

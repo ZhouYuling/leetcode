@@ -1,12 +1,8 @@
 package offer;
 
-public class offer_18 {
+import utils.ListNode;
 
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
+public class offer_18 {
 
     static class Solution {
         // 通过改变指向删除节点

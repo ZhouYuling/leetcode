@@ -1,61 +1,45 @@
 package offer;
 
+import utils.TreeNode;
+import utils.Utils;
+
 import java.util.HashMap;
 
 public class offer_36 {
 
-    static class Node {
-        public int val;
-        public Node next;
-        public Node random;
-
-        public Node() {}
-
-        public Node(int _val,Node _next,Node _random) {
-            val = _val;
-            next = _next;
-            random = _random;
+    class Solution {
+        TreeNode pre, head;
+        public TreeNode treeToDoublyList(TreeNode root) {
+            if(root == null) return null;
+            dfs(root);
+            head.left = pre;
+            pre.right = head;//进行头节点和尾节点的相互指向，这两句的顺序也是可以颠倒的
+            return head;
         }
-    }
+        void dfs(TreeNode cur) {
+            if(cur == null) return;
+            dfs(cur.left);
+            //pre用于记录双向链表中位于cur左侧的节点，即上一次迭代中的cur,当pre==null时，cur左侧没有节点,即此时cur为双向链表中的头节点
+            if(pre==null) head = cur;
+            //反之，pre!=null时，cur左侧存在节点pre，需要进行pre.right=cur的操作。
+            else pre.right = cur;
 
-    public static class Solution {
-        // HashMap which holds old nodes as keys and new nodes as its values.
-        HashMap<Node, Node> visitedHash = new HashMap<Node, Node>();
+            cur.left = pre;//pre是否为null对这句没有影响,且这句放在上面两句if else之前也是可以的。
 
-        public Node copyRandomList(Node head) {
-
-            if (head == null) {
-                return null;
-            }
-
-            // If we have already processed the current node, then we simply return the cloned version of
-            // it.
-            if (this.visitedHash.containsKey(head)) {
-                return this.visitedHash.get(head);
-            }
-
-            // Create a new node with the value same as old node. (i.e. copy the node)
-            Node node = new Node(head.val, null, null);
-
-            // Save this value in the hash map. This is needed since there might be
-            // loops during traversal due to randomness of random pointers and this would help us avoid
-            // them.
-            this.visitedHash.put(head, node);
-
-            // Recursively copy the remaining linked list starting once from the next pointer and then from
-            // the random pointer.
-            // Thus we have two independent recursive calls.
-            // Finally we update the next and random pointers for the new node created.
-            node.next = this.copyRandomList(head.next);
-            node.random = this.copyRandomList(head.random);
-
-            return node;
+            pre = cur;//pre指向当前的cur
+            dfs(cur.right);//全部迭代完成后，pre指向双向链表中的尾节点
         }
     }
 
     public static void main(String[] args) {
 
+        TreeNode tree = Utils.createTree("4,2,5,1,3");
+        String s = Utils.printTree(tree);
+        System.out.println(s);
 
+        offer_36 offer = new offer_36();
+        Solution solution = offer.new Solution();
+        solution.treeToDoublyList(tree);
 
     }
 

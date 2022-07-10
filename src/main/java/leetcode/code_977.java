@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 public class code_977 {
 
+    //平方以后再升序
     static class Solution {
         public int[] sortedSquares(int[] A) {
             int[] ans = new int[A.length];
@@ -30,16 +31,17 @@ public class code_977 {
             int[] ans = new int[n];
             int index = 0, i = negative, j = negative + 1;
             while (i >= 0 || j < n) {
+                //如果没有负数
                 if (i < 0) {
                     ans[index] = A[j] * A[j];
                     ++j;
-                } else if (j == n) {
+                } else if (j == n) { //如果i>0，同时j到最右侧
                     ans[index] = A[i] * A[i];
                     --i;
-                } else if (A[i] * A[i] < A[j] * A[j]) {
+                } else if (A[i] * A[i] < A[j] * A[j]) {//右侧平方值大于左侧平方值
                     ans[index] = A[i] * A[i];
                     --i;
-                } else {
+                } else {//左侧平方值大于右侧平方值
                     ans[index] = A[j] * A[j];
                     ++j;
                 }

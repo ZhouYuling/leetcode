@@ -1,9 +1,13 @@
 package interview;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Stack;
+import utils.ListNode;
+import utils.TreeNode;
+
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class SwordOffer {
 
@@ -87,12 +91,6 @@ public class SwordOffer {
         }
         return new String(array, 0, size);
 
-    }
-
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
     }
 
     //6.从尾到头打印链表
@@ -352,6 +350,217 @@ public class SwordOffer {
         }
         cur.next = l1 != null ? l1 : l2;
         return cur;
+    }
+
+
+    //32.层序遍历二叉树
+    public int[] levelOrder(TreeNode root){
+
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        queue.add(root);
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        while(!queue.isEmpty()){
+            TreeNode poll = queue.poll();
+            ans.add(poll.val);
+            if(poll.left != null){queue.add(root.left);}
+            if(poll.right != null){queue.add(root.right);}
+        }
+        int[] ints = new int[ans.size()];
+        for(int i = 0; i < ans.size(); i ++){
+            ints[i] = ans.get(i);
+        }
+        return ints;
+    }
+
+    //33.前序遍历二叉树
+    public List<Integer> preorderTraversal(TreeNode root) {
+
+        List<Integer> res = new ArrayList<Integer>();
+        preorder(root, res);
+        return res;
+    }
+
+    public void preorder(TreeNode root, List<Integer> res) {
+        if (root == null) {
+            return;
+        }
+
+        res.add(root.val);
+        preorder(root.left, res);
+        preorder(root.right, res);
+    }
+
+    public List<Integer>  preOrderTreaversal(TreeNode root){
+        List<Integer> res = new ArrayList<Integer>();
+        if(root == null){
+            return res;
+        }
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        TreeNode node = root;
+        while(!stack.isEmpty() || node != null){
+            while(node != null){
+                res.add(node.val);
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            node = node.right;
+        }
+
+        return res;
+    }
+
+    public List<TreeNode> postorderTraversal(TreeNode root){
+        List<TreeNode> res = new ArrayList<TreeNode>();
+        if(root == null){
+            return res;
+        }
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        TreeNode node = null;
+        while (!stack.isEmpty() || root != null){
+            while(root != null){
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if(root.right == null || root.right == node){
+                res.add(root);
+                node = root;
+                root = null;
+            }else{
+                root = stack.pop();
+                root = root.right;
+            }
+
+
+        }
+
+        return res;
+    }
+
+    //32.2按照每行打印二叉树
+    public List<List<Integer>> levelOrder2(TreeNode root){
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null){
+            return res;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            List<Integer> tmp = new ArrayList<>();
+            for(int i = queue.size(); i > 0 ; i--){
+                TreeNode poll = queue.poll();
+                tmp.add(poll.val);
+                if(poll.left != null){queue.offer(poll.left);}
+                if(poll.right != null){queue.offer(poll.right);}
+            }
+            res.add(tmp);
+        }
+        return res;
+    }
+
+    //32.3奇数行从左到右，偶数行从右到左
+    public List<List<Integer>> levelOrder3(TreeNode root){
+        List<List<Integer>> res = new ArrayList<>();
+        if(root == null) return res;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()){
+            LinkedList<Integer> tmp = new LinkedList<>();
+            for (int i = queue.size(); i > 0; i ++){
+                TreeNode node = queue.poll();
+                if(res.size() % 2 == 0){
+                    tmp.addLast(node.val);
+                }else{
+                    tmp.addFirst(node.val);
+                }
+                if(node.left != null)queue.offer(node.left);
+                if(node.right != null)queue.offer(node.right);
+            }
+            res.add(tmp);
+        }
+        return res;
+    }
+
+    //40.最小的k个数
+    public int[] getLeastNumbers(int[] arr, int k){
+        int[] vec = new int[k];
+        if(arr.length == 0){
+            return vec;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>((o1, o2) -> o2.compareTo(o1));
+        for(int i = 0; i < k; i ++){
+            queue.add(arr[i]);
+        }
+        for(int i = k; i < arr.length; i ++){
+            if(queue.peek() > arr[i]){
+                queue.poll();
+                queue.add(arr[i]);
+            }
+        }
+        for(int i = 0 ; i < k; i ++){
+            vec[i] = queue.poll();
+        }
+        return vec;
+    }
+
+    //41.数据流中的中位数
+    class MedianFinder {
+
+        /** initialize your data structure here. */
+        Queue<Integer> A,B;
+        public MedianFinder() {
+            A = new PriorityQueue<Integer>();
+            B = new PriorityQueue<Integer>((o1, o2)->o2 -o1);
+        }
+
+        public void addNum(int num) {
+            if(A.size() != B.size()){
+                //向A中插入一个数字
+                B.add(num);
+                A.offer(B.poll());
+            }else{
+                //向B中插入一个数字
+                A.add(num);
+                B.add(A.poll());
+            }
+        }
+
+        public double findMedian() {
+            return A.size() != B.size() ? A.peek() : (A.peek() + B.peek()) / 2.0;
+        }
+    }
+
+    //
+    public void arrayListLinkedList(){
+        ArrayList<String> arr = new ArrayList<>();
+        LinkedList<String> link = new LinkedList<>();
+        LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>(199);
+        queue.add("");
+        queue.remove();
+        queue.offer("");
+        queue.poll();
+
+        try {
+            queue.put("");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        try {
+            String take = queue.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        PriorityQueue<Integer> integers = new PriorityQueue<>();
+        PriorityBlockingQueue<Integer> integerPriorityBlockingQueue = new PriorityBlockingQueue<Integer>();
+
+    }
+
+    public static void main(String[] args) {
+        char a = '周';
+        ConcurrentHashMap<String, String> stringStringConcurrentHashMap = new ConcurrentHashMap<>();
+        System.out.println(a);
     }
 
 

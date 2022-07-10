@@ -1,13 +1,8 @@
 package leetcode;
 
-public class code_124 {
+import utils.TreeNode;
 
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
+public class code_124 {
 
     static class Solution {
         int maxSum = Integer.MIN_VALUE;
