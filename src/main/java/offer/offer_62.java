@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class offer_62 {
 
+    // 剑指 Offer 62. 圆圈中最后剩下的数字
+    // 官方给的答案都理解不了，下面的这个答案看起来还像那么回事
     class Solution {
         public int lastRemaining(int n, int m) {
             ArrayList<Integer> list = new ArrayList<>(n);

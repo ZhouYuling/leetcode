@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class code_036 {
 
+    // 使用HashMap
     class Solution {
         public boolean isValidSudoku(char[][] board) {
             // init data
@@ -31,6 +32,38 @@ public class code_036 {
 
                         // check if this value has been already seen before
                         if (rows[i].get(n) > 1 || columns[j].get(n) > 1 || boxes[box_index].get(n) > 1)
+                            return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+    }
+
+    // 使用数组
+    class Solution2 {
+        public boolean isValidSudoku(char[][] board) {
+            // init data
+            int[][] rows = new int[9][9];
+            int[][] columns = new int[9][9];
+            int[][][] boxes = new int[3][3][9];
+
+            // validate a board
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    char c = board[i][j];
+                    if (c != '.') {
+                        int index = c - '0' - 1;
+                        int box_index = (i / 3 ) * 3 + j / 3;
+
+                        // keep the current cell value
+                        rows[i][index] ++;
+                        columns[j][index] ++;
+                        boxes[i / 3][j / 3][index] ++;
+
+                        // check if this value has been already seen before
+                        if (rows[i][index] > 1 || columns[j][index] > 1 || boxes[i / 3][j / 3][index] > 1)
                             return false;
                     }
                 }

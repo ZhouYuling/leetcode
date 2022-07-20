@@ -1,6 +1,10 @@
 package interview;
 
+import utils.Utils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import static utils.Utils.swap;
 
@@ -11,15 +15,14 @@ public class Sort {
         int len = array.length;
         int min;
         for(int i = 0; i < len ; i ++){
+            // 是下标，而不是对应的值
             min = i;
             for(int j = i; j < len; j ++){
                 if(array[min] > array[j]){
                     min = j;
                 }
             }
-            int temp = array[i];
-            array[i] = array[min];
-            array[min] = temp;
+            swap(array, i, min);
         }
     }
 
@@ -27,11 +30,10 @@ public class Sort {
     public static void bubbleSort(int[] array){
         int len = array.length;
         for(int i = 0; i < len; i ++){
+            // 注意边界，后面已经存在排好序的i个元素，不需要再次替换
             for(int j = 0; j < len - 1 - i; j ++){
                 if(array[j + 1] < array[j]){
-                    int temp = array[j];
-                    array[j] = array[j + 1];
-                    array[j + 1] = temp;
+                    swap(array, j, j + 1);
                 }
             }
         }
@@ -79,7 +81,7 @@ public class Sort {
         if(left < right){
             int mid = (left + right) / 2;
             mergeSort(arr, left, mid);
-            mergeSort(arr, mid, right);
+            mergeSort(arr, mid + 1, right);
             merge(arr, left, right);
         }
     }
@@ -98,6 +100,7 @@ public class Sort {
                 tmp[k++] = arr[j++];
             }
         }
+        // 链表相对于数组来说，有一个好处就是，只要修改指针，后面的元素就不需要遍历了
         while(i <= mid){
             tmp[k++] = arr[i++];
         }
@@ -111,31 +114,83 @@ public class Sort {
     }
 
     //快速排序
-    public static void quickSort(int[] a, int l, int r){
+    public static void quickSort(int[] nums, int l, int r){
         if(l < r){
-            int i = l;
-            int j = r;
-            int x = a[i];
-            while(i < j){
-                while(i < j && a[j] > x){
-                    j--;
-                }
-                //if判断可以省略掉，因为最坏的情况是i=j
-                if(i < j){
-                    a[i ++] = a[j];
-                }
-                while(i < j && a[i] < x){
-                    i ++;
-                }
-                if(i < j){
-                    a[j--] = a[i];
-                }
-            }
-            a[i] = x;
-            quickSort(a, l, i - 1);
-            quickSort(a, l + 1, r);
+            int i = l,j = r;
+            // 加上一个随机数，《算法导论》上说期望时间复杂度是O(n)
+            // 空间复杂度期望为O(logn),最坏情况是O(n),每次划分都是最大值或最小值，需要递归调用n - 1层
+            int random = new Random().nextInt(r - l + 1) + l;
+            swap(nums, l, random);
+            int mid = partition3(nums, i, j);
+            quickSort(nums, l, mid - 1);
+            quickSort(nums, mid + 1, r);
         }
     }
+
+    private static int partition(int[] a, int i, int j) {
+        int x = a[i];
+        while(i < j){
+            while(i < j && a[j] > x){
+                j--;
+            }
+            //if判断可以省略掉，因为最坏的情况是i=j
+            if(i < j){
+                a[i++] = a[j];
+            }
+            while(i < j && a[i] < x){
+                i++;
+            }
+            if(i < j){
+                a[j--] = a[i];
+            }
+        }
+        a[i] = x;
+        return i;
+    }
+
+    private static int partition2(int[] nums, int lo, int hi) {
+        int v = nums[lo];
+        int i = lo, j = hi + 1;
+        while (true) {
+            while (++i <= hi && nums[i] < v);
+            while (--j >= lo && nums[j] > v);
+            if (i >= j) break;
+            Utils.swap(nums, i, j);
+        }
+        nums[lo] = nums[j];
+        nums[j] = v;
+
+        return j;
+    }
+
+    // 以左一作为基准
+    private static int partition3(int[] nums, int l, int r) {
+        int pivot = nums[l];
+        int i = r + 1;
+        for (int j = r; j > 0; --j) {
+            if (nums[j] >= pivot) {
+                i = i - 1;
+                Utils.swap(nums, i, j);
+            }
+        }
+        Utils.swap(nums, i - 1, l);
+        return i - 1;
+    }
+
+    // 以右一作为基准，只作为partition3的参考
+    private static int partition4(int[] nums, int l, int r) {
+        int pivot = nums[r];
+        int i = l - 1;
+        for (int j = l; j <= r - 1; ++j) {
+            if (nums[j] <= pivot) {
+                i = i + 1;
+                swap(nums, i, j);
+            }
+        }
+        swap(nums, i + 1, r);
+        return i + 1;
+    }
+
 
     //基数排序
     public static int[] RadixSort(int[] array) {
@@ -218,15 +273,128 @@ public class Sort {
         while (true) {
             int maxIndex = i;
             //如果有左子树，且左子树大于父节点，则将最大指针指向左子树
-            if (i * 2 < len && array[i * 2] > array[maxIndex])
-                maxIndex = i * 2;
-            //如果有右子树，且右子树大于父节点，则将最大指针指向右子树
             if (i * 2 + 1 < len && array[i * 2 + 1] > array[maxIndex])
                 maxIndex = i * 2 + 1;
+            //如果有右子树，且右子树大于父节点，则将最大指针指向右子树
+            if (i * 2 + 2 < len && array[i * 2 + 2] > array[maxIndex])
+                maxIndex = i * 2 + 2;
             //如果父节点不是最大值，则将父节点与最大值交换，并且递归调整与父节点交换的位置。
             if (maxIndex != i) {
                 swap(array, maxIndex, i);
                 i = maxIndex;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        Sort sort = new Sort();
+        int[] nums = {9, 2, 4, 3, 5, 8, 7, 1, 6};
+        // 测试使用左侧作为快排的边界
+        int i = partition3(nums, 0, nums.length - 1);
+        System.out.println(i);
+
+        // 快排
+        sort.quickSort(nums, 0, nums.length - 1);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        bubbleSort2(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        selectionSort2(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        insertSort(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6, 0};
+        mergeSort(nums, 0, nums.length - 1);
+
+        System.out.println(Arrays.toString(nums));
+
+    }
+
+    //手写冒泡排序 大的数依次和后面小的数交换位置
+    public static void bubbleSort2(int[] array){
+        int length = array.length;
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length - i - 1; j++) {
+                if (array[j + 1] < array[j]) Utils.swap(array, j, j + 1);
+            }
+        }
+    }
+
+    //手写选择排序 每一次排序排序，把最小的一个数放在最前面
+    public static void selectionSort2(int[] array){
+        int len = array.length;
+        int min = 0;
+        for (int i = 0; i < len; i++) {
+            min = i;
+            for (int j = i; j < len; j++) {
+                if (array[min] > array[j]) min = j;
+            }
+            swap(array, i, min);
+        }
+    }
+
+    //手写插入排序 遍历把当前位置的数插入到已经排序好的位置上
+    public static int[] insertSort2(int[] array) {
+        int len = array.length;
+        if (len == 0) return array;
+        int current;
+        for (int i = 0; i < len - 1; i++) {
+            current = array[i + 1];
+            int preIndex = i;
+            while (preIndex >= 0 && current < array[preIndex]) {
+                array[preIndex + 1] = array[preIndex];
+                preIndex --;
+            }
+            array[preIndex + 1] = current;
+        }
+
+        return array;
+    }
+
+    //手写归并排序
+    public static void mergeSort2(int[] arr, int left, int right){
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort2(arr, left, mid);
+            mergeSort2(arr, mid + 1, right);
+            merge2(arr, left, mid, right);
+        }
+    }
+
+    //数组进行合并
+    public static void merge2(int[] arr, int left, int mid, int right){
+        int[] tmp = new int[arr.length];
+        int k = left;
+        int i = left;
+        int j = mid + 1;
+        while (i <= mid && j <= right) {
+            if (arr[i] < arr[j]) tmp[k ++] = arr[i ++];
+            else tmp[k ++] = arr[j ++];
+        }
+        while (i <= mid) tmp[k ++] = arr[i ++];
+        while (j <= right) tmp[k ++] = arr[j ++];
+        int t = left;
+        while (t <= right) arr[t] = tmp[t ++];
+    }
+
+    //手写希尔排序 是插入排序的改进版本
+    public static void shellSort2(int[] arr){
+        int n = arr.length;
+        //希尔增量增量
+        for(int increment = n / 2;increment > 0; increment /= 2){
+            // 以下是插入排序
+            for(int i = increment;i < arr.length; i ++){
+                int temp = arr[i];
+                //每一组内进行排序
+                int t = i - increment;
+                while(t >= 0 && arr[t] > temp){
+                    arr[i] = arr[t];
+                    t -= increment;
+                }
+                arr[t + increment] = temp;
             }
         }
     }

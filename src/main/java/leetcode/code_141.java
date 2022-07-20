@@ -2,50 +2,41 @@ package leetcode;
 
 import utils.ListNode;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 public class code_141 {
 
+    // 快慢指针
     public class Solution {
-        private ListNode getIntersect(ListNode head) {
-            ListNode tortoise = head;
-            ListNode hare = head;
-
-            // A fast pointer will either loop around a cycle and meet the slow
-            // pointer or reach the `null` at the end of a non-cyclic list.
-            while (hare != null && hare.next != null) {
-                tortoise = tortoise.next;
-                hare = hare.next.next;
-                if (tortoise == hare) {
-                    return tortoise;
-                }
+        public boolean hasCycle(ListNode head) {
+            if (head == null || head.next == null) return false;
+            ListNode fast = head.next;
+            ListNode slow = head;
+            while (fast != slow) {
+                if (fast == null || fast.next == null) return false;
+                fast = fast.next.next;
+                slow = slow.next;
             }
+            return true;
 
-            return null;
         }
+    }
 
-        public ListNode detectCycle(ListNode head) {
-            if (head == null) {
-                return null;
+    // 使用hash
+    public class Solution2 {
+        public boolean hasCycle(ListNode head) {
+            if (head == null || head.next == null) return false;
+            Set<ListNode> set = new HashSet<ListNode>();
+            ListNode dummy = head;
+            while (dummy != null && dummy.next != null) {
+                if (!set.add(dummy)) return true;
+                dummy = dummy.next;
             }
 
-            // If there is a cycle, the fast/slow pointers will intersect at some
-            // node. Otherwise, there is no cycle, so we cannot find an e***ance to
-            // a cycle.
-            ListNode intersect = getIntersect(head);
-            if (intersect == null) {
-                return null;
-            }
+            return false;
 
-            // To find the e***ance to the cycle, we have two pointers traverse at
-            // the same speed -- one from the front of the list, and the other from
-            // the point of intersection.
-            ListNode ptr1 = head;
-            ListNode ptr2 = intersect;
-            while (ptr1 != ptr2) {
-                ptr1 = ptr1.next;
-                ptr2 = ptr2.next;
-            }
-
-            return ptr1;
         }
     }
 

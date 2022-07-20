@@ -1,27 +1,19 @@
 package interview;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class code {
 
 
     public static void main(String[] args) {
+        Map<String, Object> map4 = Collections.synchronizedMap(new HashMap<String, Object>());
+        AtomicInteger atomicInteger = new AtomicInteger();
 
-        TreeNode root = new TreeNode();
-        //1.
 
     }
-
-    static class TreeNode{
-        private TreeNode left;
-        private TreeNode right;
-        private int value;
-
-        public TreeNode() {
-        }
-    }
-
-
-    //select * from table where dt='20210217'
-    //select * from table where dt='20210216'
 
 
 

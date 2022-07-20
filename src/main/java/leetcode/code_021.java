@@ -43,7 +43,6 @@ public class code_021 {
 
     // 手写递归
     public ListNode mergeTwoLists3(ListNode l1, ListNode l2) {
-
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         if (l1.val < l2.val) {
@@ -57,7 +56,6 @@ public class code_021 {
     // 手写迭代
     public ListNode mergeTwoLists4(ListNode l1, ListNode l2) {
         ListNode dummy = new ListNode(-1);
-
         ListNode prev = dummy;
         while (l1 != null && l2 != null) {
             if (l1.val < l2.val) {
@@ -70,8 +68,8 @@ public class code_021 {
             prev = prev.next;
         }
         prev.next = l1 == null ? l2 : l1;
-
         return dummy.next;
+
     }
 
 

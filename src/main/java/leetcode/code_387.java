@@ -7,6 +7,8 @@ import java.util.Queue;
 
 public class code_387 {
 
+    // 方法一：使用hash存储频数
+    // 字符串从左往右遍历，保证第一个唯一字符
     class Solution {
         public int firstUniqChar(String s) {
             Map<Character, Integer> frequency = new HashMap<Character, Integer>();
@@ -23,6 +25,7 @@ public class code_387 {
         }
     }
 
+    //使用hash存储下标，如果重复则下标置为-1
     class Solution2 {
         public int firstUniqChar(String s) {
             Map<Character, Integer> position = new HashMap<Character, Integer>();
@@ -50,6 +53,8 @@ public class code_387 {
     }
 
 
+    // 使用队列和hash，其中hash用于在O(1)时间复杂度获取对应的节点
+    // hash存储频次
     class Solution3 {
         public int firstUniqChar(String s) {
             Map<Character, Integer> position = new HashMap<Character, Integer>();
@@ -75,6 +80,53 @@ public class code_387 {
             int pos;
 
             Pair(char ch, int pos) {
+                this.ch = ch;
+                this.pos = pos;
+            }
+        }
+    }
+
+    // 手写使用频次
+    class Solution11 {
+        public int firstUniqChar(String s) {
+            Map<Character, Integer> frequency = new HashMap<>();
+            char[] arr = s.toCharArray();
+            for (char r : arr) {
+                frequency.put(r, frequency.getOrDefault(r, 0) + 1);
+            }
+            for (int i = 0; i < arr.length; i++) {
+                if (frequency.get(arr[i]) == 1) return i;
+            }
+
+            return -1;
+        }
+    }
+
+    // 手写栈
+    class Solution33 {
+        public int firstUniqChar(String s) {
+
+            HashMap<Character, Integer> position = new HashMap<>();
+            Queue<Pair> queue = new LinkedList<Pair>();
+            char[] arr = s.toCharArray();
+            for (int i = 0; i < arr.length; i++) {
+                if (!position.containsKey(arr[i])) {
+                    position.put(arr[i], i);
+                    queue.offer(new Pair(arr[i], i));
+                } else {
+                    position.put(arr[i], -1);
+                    while (!queue.isEmpty() && position.get(queue.peek().ch) == -1) queue.poll();
+                }
+            }
+
+            return queue.isEmpty() ? -1 : queue.peek().pos;
+
+        }
+
+        private class Pair {
+            char ch;
+            int pos;
+            Pair (char ch, int pos) {
                 this.ch = ch;
                 this.pos = pos;
             }
