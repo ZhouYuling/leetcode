@@ -57,4 +57,36 @@ public class code_104 {
         }
     }
 
+    //手写深度优先搜索
+    public int maxDepth2(TreeNode root) {
+        if (root == null) return 0;
+        else {
+            int leftHeight = maxDepth2(root.left);
+            int rightHeight = maxDepth2(root.right);
+            return Math.max(leftHeight, rightHeight) + 1;
+        }
+    }
+
+    //手写广度优先搜索
+    public int maxDepth3(TreeNode root) {
+        int ans = 0;
+        if (root == null) return ans;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) {
+                TreeNode node = queue.poll();
+                if (node != null) {
+                    if (node.left != null) queue.offer(node.left);
+                    if (node.right != null) queue.offer(node.right);
+                }
+                size --;
+            }
+            ans ++;
+        }
+
+        return ans;
+    }
+
 }

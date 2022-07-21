@@ -55,4 +55,31 @@ public class code_101 {
         return true;
     }
 
+    // 手写递归
+    public boolean check3(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        if (p == null || q == null) return false;
+        return p.val == q.val && check3(p.left, q.right) && check3(p.right, q.left);
+    }
+
+    // 手写迭代
+    public boolean check4(TreeNode u, TreeNode v) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(u);
+        queue.offer(v);
+        while (!queue.isEmpty()) {
+            u = queue.poll();
+            v = queue.poll();
+            if (u == null && v == null) continue;
+            if (u == null || v == null || u.val != v.val) return false;
+
+            queue.offer(u.left);
+            queue.offer(v.right);
+            queue.offer(u.right);
+            queue.offer(v.left);
+        }
+
+        return true;
+    }
+
 }

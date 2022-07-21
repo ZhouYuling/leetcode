@@ -87,6 +87,37 @@ public class code_094 {
         }
     }
 
+    // 手写迭代
+    public List<Integer> inorderTraversal4(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        Deque<TreeNode> stack = new LinkedList<>();
+        TreeNode node = root;
+        while (!stack.isEmpty() || node != null) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+            node = stack.pop();
+            res.add(node.val);
+            node = node.right;
+        }
+
+        return res;
+    }
+
+    // 手写递归
+    public List<Integer> inorderTraversal5(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        inorder2(root, res);
+        return res;
+    }
+
+    private void inorder2(TreeNode root, List<Integer> res) {
+        if (root == null) return;
+        inorder2(root.left, res);
+        res.add(root.val);
+        inorder2(root.right, res);
+    }
 
 
 }

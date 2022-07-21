@@ -71,5 +71,47 @@ public class code_102 {
         }
     }
 
+    // 手写广度遍历
+    class Solution3 {
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (root == null) return res;
+
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.offer(root);
+            while (!queue.isEmpty()) {
+                List<Integer> level = new ArrayList<>();
+                int currentLevelSize = queue.size();
+                for (int i = 0; i < currentLevelSize; i++) {
+                    TreeNode node = queue.poll();
+                    if (node != null) {
+                        level.add(node.val);
+                        if (node.left != null) queue.offer(node.left);
+                        if (node.right != null) queue.offer(node.right);
+                    }
+                }
+                res.add(level);
+            }
+
+            return res;
+        }
+    }
+
+    class Solution4 {
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> res = new ArrayList<>();
+            if (root == null) return res;
+            dfs(res, root, 0);
+            return res;
+        }
+
+        private void dfs(List<List<Integer>> res, TreeNode node, int level) {
+            if (res.size() == level) res.add(new ArrayList<>());
+            res.get(level).add(node.val);
+            if (node.left != null) dfs(res, node.left, level + 1);
+            if (node.right != null) dfs(res, node.right, level + 1);
+        }
+    }
+
 
 }
