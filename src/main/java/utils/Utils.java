@@ -103,5 +103,27 @@ public class Utils {
         }
     }
 
+    public static ListNode createList(String data) {
+        if(data.length()==0) return null;
+        String[] req=data.split(",");
+        ListNode head = new ListNode(Integer.parseInt(req[0]));
+        ListNode dummy = new ListNode(-1, head);
+        for (int i = 1; i < req.length; i++) {
+            head.next = new ListNode(Integer.parseInt(req[i]));
+            head = head.next;
+        }
+        return dummy.next;
+    }
+
+    public static String printList(ListNode head) {
+        ListNode node = head;
+        List<Integer> list = new ArrayList<>();
+        while (node != null) {
+            list.add(node.val);
+            node = node.next;
+        }
+        return list.toString();
+    }
+
 
 }

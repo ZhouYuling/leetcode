@@ -47,4 +47,32 @@ public class code_098 {
         return true;
     }
 
+    // 手写递归
+    public boolean isValidBST3(TreeNode root) {
+        return isValidBST3(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean isValidBST3(TreeNode node, long lower, long upper) {
+        if (node == null) return true;
+        if (node.val <= lower || node.val >= upper) return false;
+        return isValidBST3(node.left, lower, node.val) && isValidBST3(node.right, node.val, upper);
+    }
+
+    // 手写中序遍历
+    public boolean isValidBST4(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<>();
+        double inorder = -Double.MAX_VALUE;
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (root.val <= inorder) return false;
+            inorder = root.val;
+            root = root.right;
+        }
+        return true;
+    }
+
 }

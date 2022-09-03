@@ -20,4 +20,21 @@ public class MyThreadPoolExecutor {
 
     }
 
+    private static void createSingleThreadPool() {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        for (int i = 0; i < 10; i++) {
+            final int index = i;
+            executorService.execute(() -> {
+                // 获取线程名称,默认格式:pool-1-thread-1
+                System.out.println(System.currentTimeMillis() + " " + Thread.currentThread().getName() + " " + index);
+                // 等待2秒
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
 }

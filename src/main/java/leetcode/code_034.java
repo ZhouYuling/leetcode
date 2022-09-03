@@ -35,21 +35,27 @@ public class code_034 {
     public static void main(String[] args) {
 
         int[] nums = new int[]{1, 2, 3, 3, 3, 4, 5, 6, 7};
-        int[] res = new code_034().searchRange(nums, 3);
+        code_034 code = new code_034();
+        int[] res = code.searchRange(nums, 3);
         System.out.println(Arrays.toString(res));
 
-        int i = new code_034().binarySearch(nums, 3, false);
+        int i = code.binarySearch(nums, 3, false);
         System.out.println(i);
 
-        int j = new code_034().binarySearchLeftLastLowNum(nums, 3);
+        int j = code.binarySearchLeftLastLowNum(nums, 3);
         System.out.println(j);
 
-        int m = new code_034().binarySearchRightFistEqualNum(nums, 3);
+        int m = code.binarySearchRightFistEqualNum(nums, 3);
         System.out.println(m);
 
         int x=0,y=3;
         System.out.println(x);
         System.out.println(y);
+
+        System.out.println("--------------");
+        System.out.println(code.binarySearchLeftLastLowNum(nums, 3));
+        System.out.println(code.binarySearchRightFistEqualNum(nums, 3));
+        System.out.println(code.binarySearchRightFistEqualNum2(nums, 3));
 
     }
 
@@ -82,10 +88,19 @@ public class code_034 {
         return ans;
     }
 
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
+    // 测试ans放在另外一个判断中
+    public int binarySearchRightFistEqualNum2(int[] nums, int target) {
+        int left = 0, right = nums.length - 1, ans = nums.length;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] <= target) {
+                left = mid + 1;
+            }else {
+                right = mid - 1;
+                ans = mid;
+            }
+        }
+        return ans;
     }
 
 

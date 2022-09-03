@@ -2,9 +2,7 @@ package interview;
 
 import utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 import static utils.Utils.swap;
 
@@ -286,33 +284,6 @@ public class Sort {
         }
     }
 
-    public static void main(String[] args) {
-
-        Sort sort = new Sort();
-        int[] nums = {9, 2, 4, 3, 5, 8, 7, 1, 6};
-        // 测试使用左侧作为快排的边界
-        int i = partition3(nums, 0, nums.length - 1);
-        System.out.println(i);
-
-        // 快排
-        sort.quickSort(nums, 0, nums.length - 1);
-
-        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
-        bubbleSort2(nums);
-
-        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
-        selectionSort2(nums);
-
-        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
-        insertSort(nums);
-
-        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6, 0};
-        mergeSort(nums, 0, nums.length - 1);
-
-        System.out.println(Arrays.toString(nums));
-
-    }
-
     //手写冒泡排序 大的数依次和后面小的数交换位置
     public static void bubbleSort2(int[] array){
         int length = array.length;
@@ -398,5 +369,82 @@ public class Sort {
             }
         }
     }
+
+    // 猴子排序
+    Random random = new Random();
+
+    private void bogoSort(int[] arr) {
+        while (true) {
+            if (isAscendingSorted(arr)) break;
+            shuffle(arr);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public void shuffle(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            int swapPosition = random.nextInt(i + 1);
+            int temp = arr[i];
+            arr[i] = arr[swapPosition];
+            arr[swapPosition] = temp;
+        }
+    }
+
+    private boolean isAscendingSorted(int[] arr) {
+        if (arr == null || arr.length < 2) return true;
+        for (int i = 0; i < arr.length - 1; i++) {
+            if (arr[i] > arr[i + 1]) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        Sort sort = new Sort();
+        int[] nums = {9, 2, 4, 3, 5, 8, 7, 1, 6};
+        // 测试使用左侧作为快排的边界
+        int i = partition3(nums, 0, nums.length - 1);
+        System.out.println(i);
+
+        // 快排
+        sort.quickSort(nums, 0, nums.length - 1);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        bubbleSort2(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        selectionSort2(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6};
+        insertSort(nums);
+
+        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6, 0};
+        mergeSort(nums, 0, nums.length - 1);
+
+        System.out.println(Arrays.toString(nums));
+
+//        nums = new int[]{9, 2, 4, 3, 5, 8, 7, 1, 6, 0};
+//        sort.bogoSort(nums);
+//        System.out.println("猴子排序");
+//        System.out.println(Arrays.toString(nums));
+        Arrays.sort(nums);
+        Collections.sort(new ArrayList<Integer>());
+
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(1, 100);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("", "");
+        map.put(null, null);
+        map.put(null, null);
+        map.replace("", "1");
+
+
+    }
+
 
 }

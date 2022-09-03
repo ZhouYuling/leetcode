@@ -6,9 +6,7 @@ public class code_701 {
 
     class Solution {
         public TreeNode insertIntoBST(TreeNode root, int val) {
-            if (root == null) {
-                return new TreeNode(val);
-            }
+            if (root == null) return new TreeNode(val);
             TreeNode pos = root;
             while (pos != null) {
                 if (val < pos.val) {
